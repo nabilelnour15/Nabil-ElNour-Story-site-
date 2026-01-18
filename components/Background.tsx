@@ -4,33 +4,39 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 export const Background: React.FC = () => {
   const { scrollYProgress } = useScroll();
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 45]);
-  const opacity1 = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.5, 0.2]);
-  const opacity2 = useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.4, 0.1]);
+  const rotateX = useTransform(scrollYProgress, [0, 1], [20, -20]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none -z-10 bg-grid overflow-hidden">
+    <div className="fixed inset-0 pointer-events-none -z-10 bg-black overflow-hidden perspective-[1000px]">
       <motion.div 
-        style={{ rotate, opacity: opacity1 }}
+        style={{ rotateX, y }}
+        className="absolute inset-[-100%] bg-grid opacity-20"
+      />
+      
+      {/* Floating Orbs */}
+      <motion.div 
         animate={{ 
-          scale: [1, 1.3, 1],
-          x: [0, 50, 0],
-          y: [0, 30, 0]
+          scale: [1, 1.2, 1],
+          opacity: [0.1, 0.3, 0.1],
+          x: [0, 100, 0],
+          y: [0, -50, 0]
         }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -top-1/4 -left-1/4 w-[80vw] h-[80vw] bg-blue-600/5 blur-[120px] rounded-full"
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute top-0 left-0 w-[60vw] h-[60vw] bg-blue-600/10 blur-[150px] rounded-full"
       />
       <motion.div 
-        style={{ opacity: opacity2 }}
         animate={{ 
           scale: [1.2, 1, 1.2],
-          x: [0, -40, 0],
-          y: [0, -20, 0]
+          opacity: [0.1, 0.2, 0.1],
+          x: [0, -80, 0],
+          y: [0, 60, 0]
         }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute -bottom-1/4 -right-1/4 w-[70vw] h-[70vw] bg-purple-600/5 blur-[150px] rounded-full"
+        transition={{ duration: 15, repeat: Infinity, ease: "linear", delay: 5 }}
+        className="absolute bottom-0 right-0 w-[50vw] h-[50vw] bg-purple-600/10 blur-[150px] rounded-full"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505]" />
+
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
     </div>
   );
 };
